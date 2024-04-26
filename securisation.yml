@@ -1,0 +1,9 @@
+---
+- hosts: servchat
+  become: true
+  become_user: root
+  tasks:
+    - name: 'Install fail2ban package'
+      apt:
+        name: fail2ban
+        state: present
