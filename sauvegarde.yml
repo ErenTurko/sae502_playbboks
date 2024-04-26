@@ -1,0 +1,22 @@
+---
+- name: Zippier le dossier Mattermost
+  hosts: servchat
+  tasks:
+    - name: Obtenir la date
+      ansible.builtin.set_fact:
+        backup_date: "{{ ansible_date_time.date | regex_replace('-', '') }}"
+
+    - name: Créer un dossier pour la sauvegarde
+      ansible.builtin.file:
+        path: "/Sauvegarde-Mattermost/sauvegarde-{{ backup_date }}"
+        state: directory
+      register: backup_dir
+
+    - name: Zippier le dossier
+      ansible.builtin.archive:
+        path: /mm
+        dest: "/Sauvegarde-Mattermost/sauvegarde-{{ backup_date }}/dossier_archive.zip"
+
+    - name: Afficher le chemin du fichier zip
+      debug:
+        msg: "Le fichier zip est disponible à : /Sauvegarde-Mattermost/sauvegarde-{{ backup_date }}/dossier_archive.zip"
